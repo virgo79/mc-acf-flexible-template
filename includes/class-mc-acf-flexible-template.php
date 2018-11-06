@@ -54,10 +54,14 @@ if( !class_exists('MC_Acf_Flexible_Template') ) {
 
             $fields = $_POST['acf'];
 
-
             if ( ! empty( $fields ) && is_array( $fields ) ) {
-                foreach ( $fields as $key => $field ) {
+                
+                $layout_parent_key = get_post_meta( $post_id, '_flex_layout_parent', true );
+                
+                if( isset( $fields[$layout_parent_key] ) ) {
 
+                    $field = $fields[$layout_parent_key];
+                    
                     if ( ! is_serialized( $field ) ) {
                        $field = maybe_serialize( $field );
                     }
@@ -71,6 +75,7 @@ if( !class_exists('MC_Acf_Flexible_Template') ) {
                     }
                 }
             }
+            
             // unset ACF post data because we don't want to add this to post_meta
             unset( $_POST['acf'] );
         }
